@@ -25,6 +25,8 @@
 # Fichiers de configuration spécifiques aux IDE
 # STM32CubeIDE
 *.launch
+*.project
+*.cproject
 *.settings/
 
 # Keil uVision
@@ -53,3 +55,5 @@
 /.vscode/
 *.launch.xml
 
+#macOS
+.DS_Store
