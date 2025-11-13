@@ -4,16 +4,17 @@
 
 | Nom | Prénom | Groupe |
 |:--|:--|:--:|
-| THÉBAULT | Nelven | ESE TP1 |
-| CORDI | Hugo | ESE TP1 |
+| THÉBAULT | [Nelven](https://github.com/NelvTheb) | ESE TP1 |
+| CORDI | [Hugo](https://github.com/Lynxlegrand) | ESE TP1 |
 
 📅 **Séances de TP :** 
 - séance 1 : 13 novembre 2025 
 - séance 2 :
 - séance 3 :
 - séance 4 :
-🏫 **ENSEA — Département Électronique**  
-👨‍🏫 **Encadrant :** M. Durand  
+
+🏫 **ENSEA — 3A ESE**  
+👨‍🏫 **Encadrant :** [M.Fiack](https://github.com/lfiack)  
 
 ---
 
