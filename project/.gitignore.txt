@@ -1,28 +1,50 @@
-# Build outputs
-/Debug/
-/Release/
-/build/
-/out/
+# Ignore build output folders
+Debug/
+Release/
+.build/
+bin/
+obj/
 
-# STM32CubeIDE files
-/.settings/
-/.metadata/
-/stm32cubeide.project.prefs
+# Ignore Eclipse/IDE settings
+.settings/
+.cproject
+.project
 
-# Binaries and temporary files
-*.o
-*.d
-*.elf
-*.map
-*.bin
-*.hex
+# Ignore STM32CubeIDE specific files
+*.launch
 *.log
+
+# Ignore temporary files
 *.tmp
 *.bak
+*.swp
+*~
 
-# OS-specific
+# Ignore user-specific files
+*.user
+*.userprefs
+
+# Ignore compiled object files and binaries
+*.o
+*.elf
+*.map
+*.hex
+*.bin
+
+# Ignore backup files and auto-generated files
+*.bak
+*.orig
+
+# Ignore generated Makefiles
+Makefile
+
+# Ignore Core dumps and dump files
+*.dmp
+
+# Ignore other IDE-specific files
+.vscode/
+.idea/
+
+# Ignore system files
 .DS_Store
 Thumbs.db
-
-# VSCode
-.vscode/
