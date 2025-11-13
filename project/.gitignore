@@ -1,0 +1,59 @@
+# Fichiers binaires et exécutables
+*.elf
+*.bin
+*.hex
+*.axf
+*.out
+
+# Fichiers objets et autres fichiers intermédiaires
+*.o
+*.d
+*.dmp
+*.map
+*.lst
+
+# Dossiers de build
+/build/
+/Debug/
+/Release/
+/ReleaseIAR/
+/DebugIAR/
+/.elf/
+/.uvguix/
+/Debug STM32CubeIDE/
+
+# Fichiers de configuration spécifiques aux IDE
+# STM32CubeIDE
+*.launch
+*.project
+*.cproject
+*.settings/
+
+# Keil uVision
+*.uvproj*
+*.uvopt*
+
+# IAR Embedded Workbench
+*.ewp*
+*.ewd*
+
+# Fichiers temporaires et caches
+*.bak
+*.swp
+*.tmp
+*~
+
+# Fichiers de logs
+*.log
+
+# Dossier généré par STM32CubeMX
+/Drivers/STM32Fxx_HAL_Driver/Inc/Legacy
+/Drivers/STM32Fxx_HAL_Driver/Src/Legacy
+
+# Autres dossiers ou fichiers à ignorer (ajustez selon votre projet)
+/.idea/
+/.vscode/
+*.launch.xml
+
+#macOS
+.DS_Store
