@@ -25,8 +25,6 @@
 # Fichiers de configuration spécifiques aux IDE
 # STM32CubeIDE
 *.launch
-*.project
-*.cproject
 *.settings/
 
 # Keil uVision
