@@ -1,0 +1,28 @@
+# Build outputs
+/Debug/
+/Release/
+/build/
+/out/
+
+# STM32CubeIDE files
+/.settings/
+/.metadata/
+/stm32cubeide.project.prefs
+
+# Binaries and temporary files
+*.o
+*.d
+*.elf
+*.map
+*.bin
+*.hex
+*.log
+*.tmp
+*.bak
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
