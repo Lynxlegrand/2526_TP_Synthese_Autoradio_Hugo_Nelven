@@ -1,50 +1,55 @@
-# Ignore build output folders
-Debug/
-Release/
-.build/
-bin/
-obj/
+# Fichiers binaires et exécutables
+*.elf
+*.bin
+*.hex
+*.axf
+*.out
 
-# Ignore Eclipse/IDE settings
-.settings/
-.cproject
-.project
+# Fichiers objets et autres fichiers intermédiaires
+*.o
+*.d
+*.dmp
+*.map
+*.lst
 
-# Ignore STM32CubeIDE specific files
+# Dossiers de build
+/build/
+/Debug/
+/Release/
+/ReleaseIAR/
+/DebugIAR/
+/.elf/
+/.uvguix/
+/Debug STM32CubeIDE/
+
+# Fichiers de configuration spécifiques aux IDE
+# STM32CubeIDE
 *.launch
-*.log
+*.settings/
 
-# Ignore temporary files
-*.tmp
+# Keil uVision
+*.uvproj*
+*.uvopt*
+
+# IAR Embedded Workbench
+*.ewp*
+*.ewd*
+
+# Fichiers temporaires et caches
 *.bak
 *.swp
+*.tmp
 *~
 
-# Ignore user-specific files
-*.user
-*.userprefs
+# Fichiers de logs
+*.log
 
-# Ignore compiled object files and binaries
-*.o
-*.elf
-*.map
-*.hex
-*.bin
+# Dossier généré par STM32CubeMX
+/Drivers/STM32Fxx_HAL_Driver/Inc/Legacy
+/Drivers/STM32Fxx_HAL_Driver/Src/Legacy
 
-# Ignore backup files and auto-generated files
-*.bak
-*.orig
+# Autres dossiers ou fichiers à ignorer (ajustez selon votre projet)
+/.idea/
+/.vscode/
+*.launch.xml
 
-# Ignore generated Makefiles
-Makefile
-
-# Ignore Core dumps and dump files
-*.dmp
-
-# Ignore other IDE-specific files
-.vscode/
-.idea/
-
-# Ignore system files
-.DS_Store
-Thumbs.db
