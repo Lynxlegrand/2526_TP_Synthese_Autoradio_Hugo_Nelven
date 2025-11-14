@@ -7,14 +7,13 @@
 | THÉBAULT | [Nelven](https://github.com/NelvTheb) | ESE TP1 |
 | CORDI | [Hugo](https://github.com/Lynxlegrand) | ESE TP1 |
 
+🏫 **ENSEA — 3A ESE**  
+👨‍🏫 **Encadrant :** [L.Fiack](https://github.com/lfiack)  
 📅 **Séances de TP :** 
 - séance 1 : 13 novembre 2025 
 - séance 2 :
 - séance 3 :
 - séance 4 :
-
-🏫 **ENSEA — 3A ESE**  
-👨‍🏫 **Encadrant :** [M.Fiack](https://github.com/lfiack)  
 
 ---
 
@@ -64,10 +63,10 @@
    - Ajout de la redirection pour le printf
      ```c
         int __io_putchar(int chr)
-    {
+        {
         HAL_UART_Transmit(&huart2, (uint8_t*)&chr,1,HAL_MAX_DELAY);
         return chr;
-    }
+        }
      ```
    - Envoi d’un message simple :
      ```c
@@ -79,7 +78,8 @@
    - Middleware activé : **CMSIS v1**
    - Création d’une tâche principale `StartDefaultTask` :
      ```c
-     void StartDefaultTask(void *argument) {
+     void StartDefaultTask(void *argument)
+     {
          for (;;) {
              HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
              osDelay(500);
