@@ -1,0 +1,14 @@
+../Core/Src/main.c:65:5:__io_putchar	1
+../Core/Src/main.c:71:9:drv_uart_receive	1
+../Core/Src/main.c:77:9:drv_uart_transmit	1
+../Core/Src/main.c:91:5:fonction	2
+../Core/Src/main.c:105:5:addition	2
+../Core/Src/main.c:122:6:task_shell	1
+../Core/Src/main.c:133:6:HAL_UART_RxCpltCallback	2
+../Core/Src/main.c:142:6:task_led	1
+../Core/Src/main.c:151:6:task_chenillard	2
+../Core/Src/main.c:172:6:vApplicationStackOverflowHook	1
+../Core/Src/main.c:206:5:main	4
+../Core/Src/main.c:283:6:SystemClock_Config	4
+../Core/Src/main.c:340:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:358:6:Error_Handler	1
