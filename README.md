@@ -79,16 +79,66 @@
 
 6. Faites fonctionner le shell :
    - (a) Dans une tâche,
-     
-   GPIO_Expander -> MCP23S17
-
-   SPI3 utilisé car SCK/MISO/MOSI/CS sur PC10/PC11/PB5/PB7
-
-   Commencé à coder le driver du GPIO_Expander
+   ```c
+   void task_shell(void * unused)
+   {
+   	shell_init(&h_shell);
+   	shell_add(&h_shell, 'f', fonction, "Une fonction inutile");
+   	shell_add(&h_shell, 'a', addition, "Ma super addition");
+   	shell_run(&h_shell);
+   
+   	// Une tâche ne doit *JAMAIS* retourner
+   	// Ici elle ne retourne pas parce qu'il y a une boucle infinie dans shell_run();
+   }
+     ```
 
    - (b) En mode interruption,
+   ```c
+   void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+   {
+   	if (huart->Instance == USART2)	// LPUART1
+   	{
+   		// Caractère reçu : Donner le sémaphore pour débloquer task_shell
+   		shell_uart_rx_callback(&h_shell);
+   	}
+   }
+     ```
 
    - (c) Avec un driver sous forme de structure.
+   ```c
+   typedef uint8_t (* drv_shell_transmit_t)(char * pData, uint16_t size);
+   typedef uint8_t (* drv_shell_receive_t)(char * pData, uint16_t size);
+   
+   typedef struct drv_shell_struct
+   {
+   	drv_shell_transmit_t drv_shell_transmit;
+   	drv_shell_receive_t drv_shell_receive;
+   } drv_shell_t;
+   
+   struct h_shell_struct;
+   
+   typedef int (* shell_func_pointer_t)(struct h_shell_struct * h_shell, int argc, char ** argv);
+   
+   typedef struct{
+   	char c;
+   	shell_func_pointer_t func;
+   	char * description;
+   } shell_func_t;
+   
+   typedef struct h_shell_struct
+   {
+   	UART_HandleTypeDef * huart;
+   	drv_shell_t drv_shell;
+   
+   	SemaphoreHandle_t sem_uart_rx;
+   	int shell_func_list_size;
+   	shell_func_t shell_func_list[SHELL_FUNC_LIST_MAX_SIZE];
+   
+   	char print_buffer[BUFFER_SIZE];
+   	char cmd_buffer[BUFFER_SIZE];
+   } h_shell_t;
+
+     ```
 
 Remarque : Vous pouvez vous aider des codes disponibles sur ce projet github :  
 https://github.com/lfiack/rtos_td_shell
@@ -100,18 +150,34 @@ https://github.com/lfiack/rtos_td_shell
 ### 2.1 Configuration
 
 1. Quelle est la référence du GPIO Expander ? Vous aurez besoin de sa datasheet, téléchargez-la.
+
+La référence du GPIO_Expander est *MCP23S17*. 
+
 2. Sur le STM32, quel SPI est utilisé ?
+
+*SPI3* est utilisé car les SCK/MISO/MOSI/CS sont sur PC10/PC11/PB5/PB7. 
+
 3. Quels sont les paramètres à configurer dans STM32CubeIDE ?
+<img width="1503" height="585" alt="image" src="https://github.com/user-attachments/assets/a89e1e50-f704-47bf-8259-581300c80c10" />
+
+Pour activer le SPI, il faut se rendre dans l'ioc et activer les SCK/MISO/MOSI/CS qui sont sur PC10/PC11/PB5/PB7. De plus, il faut mettre Data size à 8 bits et le PSC à 32 pour réduire la vitesse de transmission des données. 
+
+
 4. Configurez-les.
+
+On a commencé à coder le driver du GPIO_Expander
 
 ### 2.2 Tests
 
 1. Faites clignoter une ou plusieurs LED.
+
 2. Pour toutes les tester, vous pouvez faire un chenillard (par exemple).
 
 ### 2.3 Driver
 
 1. Écrivez un driver pour piloter les LED. Utilisez une structure.
+![WhatsApp Image 2025-11-21 à 16 09 46_89199db1](https://github.com/user-attachments/assets/6b336a5f-9ceb-4ce8-b2f5-bb9adc20f984)
+
 2. Écrivez une fonction shell permettant d’allumer ou d’éteindre n’importe quelle LED.
 
 ---
