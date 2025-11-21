@@ -26,6 +26,14 @@
 #define MCP23S17_OLATB      0x15
 #define MCP23S17_IOCON      0x0A
 
+void MCP23S17_Init(void);
+void MCP23S17_WriteRegister(uint8_t reg, uint8_t value);
+uint8_t MCP23S17_ReadRegister(uint8_t reg);
+void MCP23S17_SetAllPinsHigh(void);
+void MCP23S17_SetAllPinsLow(void);
+void Select_LED(char port, uint8_t led,uint8_t state);
+void Clear_LED(char port, uint8_t led);
+
 // ===================================================================
 // Structure
 // ===================================================================

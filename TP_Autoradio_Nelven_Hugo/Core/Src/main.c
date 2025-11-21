@@ -119,11 +119,57 @@ int addition(h_shell_t * h_shell, int argc, char ** argv)
 	return 0;
 }
 
+int led_control(h_shell_t *h_shell, int argc, char **argv)
+{
+	int numero;
+	int size;
+	numero = atoi(argv[1]);
+	if (argc==3)
+	{
+		if ((numero > 8) && (numero < 17)){
+			if (numero > 8)
+			{
+				Select_LED('B', 16-numero,atoi(argv[2]));
+			}
+			else if (numero < 8)
+			{
+				int state = atoi(argv[2]);
+				Select_LED('A', numero,state);
+			}
+			else {
+				size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"[N>16] ! Il y a pas assez de led\r\n");
+			}
+			size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"LED OK\r\n");
+			}
+		else{
+			size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"[N>16] ! Il y a pas assez de led\r\n");
+		}
+	}
+	else if (argc==4)
+	{
+		numero = atoi(argv[1]) * 10 + atoi(argv[2]);
+		if (numero < 17){
+		Select_LED('B', 16-numero,atoi(argv[3]));
+		size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"LED OK\r\n");
+		}
+		else{
+			size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"[N>16] ! Il y a pas assez de led\r\n");
+		}
+	}
+	else
+	{
+		size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"Écrire : l <id[0:16]> <0|1>\r\n");
+	}
+	drv_uart_transmit(h_shell->print_buffer,size);
+	return 0;
+}
+
 void task_shell(void * unused)
 {
 	shell_init(&h_shell);
 	shell_add(&h_shell, 'f', fonction, "Une fonction inutile");
 	shell_add(&h_shell, 'a', addition, "Ma super addition");
+	shell_add(&h_shell, 'l', led_control, "LED control: l <id[0:16]> <0|1>");
 	shell_run(&h_shell);
 
 	// Une tâche ne doit *JAMAIS* retourner
@@ -154,7 +200,7 @@ void task_chenillard(void *unused)
 	    for (;;)
 	    {
 	        // Allume la LED correspondante sur MCP23S17 port A
-	    	MCP23S17_WriteRegister(0x12, led_state);
+//	    	MCP23S17_WriteRegister(0x12, led_state);
 
 	        // Décale la LED à allumer
 	        led_state <<= 1;
@@ -232,7 +278,10 @@ int main(void)
   MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
   MCP23S17_Init();
+  MCP23S17_SetAllPinsLow();
+  HAL_Delay(1000);
   MCP23S17_SetAllPinsHigh();
+
 
 	printf("==== Autoradio Hugo Nelven Start ====\r\n");
 	if (xTaskCreate(task_shell, "Shell", 512, NULL, 1, NULL) != pdPASS)
