@@ -78,23 +78,32 @@
    - Middleware activé : **CMSIS v1**
    - Création d’une tâche principale `StartDefaultTask` :
      ```c
-     void StartDefaultTask(void *argument)
-     {
-         for (;;) {
-             HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-             osDelay(500);
+     void task_led(void * unused)
+      {
+         for (;;)
+         {
+            HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+            vTaskDelay(250);
          }
-     }
+      }
      ```
    - ✅ Résultat : LED contrôlée par une tâche FreeRTOS (test multitâche réussi).
 
 5. **Mise en place du Shell :**
    - Shell basé sur le projet de référence : [rtos_td_shell](https://github.com/lfiack/rtos_td_shell)
-   - Intégration du shell dans une tâche dédiée, avec interruption UART.
+   - Intégration du shell dans une tâche dédiée, avec interruption UART et sémaphores et librairie.
    - ✅ Résultat : commandes interactives fonctionnelles via terminal série.
 
 6. **Driver**
    - GPIO_Expancder -> MCP23S17
    - SPI3 utilisé car SCK/MISO/MOSI/CS sur PC10/PC11/PB5/PB7
+   - Commencé à coder le driver du GPIO_Expander
 
 ---
+
+## 🧪 Séance 2 — GPIO Expander
+
+1. **Test**
+   - 
+
+
