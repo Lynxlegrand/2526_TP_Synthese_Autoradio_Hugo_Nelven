@@ -8,20 +8,19 @@
 | CORDI | [Hugo](https://github.com/Lynxlegrand) | ESE TP1 |
 
 🏫 **ENSEA — 3A ESE**  
-👨‍🏫 **Encadrant :** [L.Fiack](https://github.com/lfiack)  
+👨‍🏫 **Encadrants :** [L.Fiack](https://github.com/lfiack)  et  [N.Papazoglou](https://github.com/lfiack)
 
 ---
 
 ## TOC
-- [🎓 TP de Synthèse — Autoradio](#-tp-de-synthèse--autoradio)
-  - [👥 Équipe](#-équipe)
-  - [🎯 Objectifs du TP](#-objectifs-du-tp)
-  - [1. Démarrage](#1-démarrage)
-  - [2. Le GPIO Expander et le VU-Mètre](#2-le-gpio-expander-et-le-vu-metre)
-  - [3. Le CODEC Audio SGTL5000](#3-le-codec-audio-sgtl5000)
-  - [4. Visualisation](#4.-visualtion)
-  - [5. Filtre RC](#5.-filtre-rc)
-  - [6. Programmation d'un effet audio](#6.-programmation-d'un-effet-audio)
+- [👥 Équipe](#-équipe)
+- [🎯 Objectifs du TP](#-objectifs-du-tp)
+- [1. Démarrage](#1-démarrage)
+- [2. Le GPIO Expander et le VU-Mètre](#2-le-gpio-expander-et-le-vu-metre)
+- [3. Le CODEC Audio SGTL5000](#3-le-codec-audio-sgtl5000)
+- [4. Visualisation](#4.-visualtion)
+- [5. Filtre RC](#5.-filtre-rc)
+- [6. Programmation d'un effet audio](#6.-programmation-d'un-effet-audio)
 
 ## 🎯 Objectifs du TP
 
