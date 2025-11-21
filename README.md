@@ -160,7 +160,7 @@ La référence du GPIO_Expander est *MCP23S17*.
 3. Quels sont les paramètres à configurer dans STM32CubeIDE ?
 <img width="1503" height="585" alt="image" src="https://github.com/user-attachments/assets/a89e1e50-f704-47bf-8259-581300c80c10" />
 
-Pour activer le SPI, il faut se rendre dans l'ioc et activer les SCK/MISO/MOSI/CS qui sont sur PC10/PC11/PB5/PB7. De plus, il faut mettre Data size à 8 bits et le PSC à 32 pour réduire la vitesse de transmission des données. 
+Pour activer le SPI, il faut se rendre dans l'ioc et activer les SCK/MISO/MOSI/CS qui sont sur PC10/PC11/PB5/PB7. De plus, il faut mettre Data size à 8 bits et le PSC à 32 pour réduire la vitesse de transmission des données. Ne pas oublier de mettre le PA0 en GPIO_OUT pour le CS à l'initialisation.
 
 
 4. Configurez-les.
@@ -172,14 +172,87 @@ On a commencé à coder le driver du GPIO_Expander
 1. Faites clignoter une ou plusieurs LED.
 
 2. Pour toutes les tester, vous pouvez faire un chenillard (par exemple).
+   ```c
+      void task_chenillard(void *unused)
+   {
+   	    uint8_t led_state = 0x01;
+   	    for (;;)
+   	    {
+   	        // Allume la LED correspondante sur MCP23S17 port A
+   	    	MCP23S17_WriteRegister(0x12, led_state);
+   
+   	        // Décale la LED à allumer
+   	        led_state <<= 1;
+   	        if (led_state == 0) {
+   	            led_state = 0x01;  // Reset au début du chenillard
+   	        }
+   
+   	        vTaskDelay(pdMS_TO_TICKS(200));  // délai 200 ms
+   
+   
+   	    }
+   }
+   ```
+   On observe bine que chaque LEDs sont allumer et une seule s'éteint, chacun à sont tour pendant 200ms, puis se rallume -> effet de défilement.
 
 ### 2.3 Driver
 
 1. Écrivez un driver pour piloter les LED. Utilisez une structure.
 ![WhatsApp Image 2025-11-21 à 16 09 46_89199db1](https://github.com/user-attachments/assets/6b336a5f-9ceb-4ce8-b2f5-bb9adc20f984)
+   - Fait, voir le driveur dans `chenille.h` et `chenille.c`
 
-2. Écrivez une fonction shell permettant d’allumer ou d’éteindre n’importe quelle LED.
-
+3. Écrivez une fonction shell permettant d’allumer ou d’éteindre n’importe quelle LED.
+   - Création de la fonction puis ne pas oublier de l'ajouter au shell avec
+     ```c
+      shell_add(&h_shell, 'l', led_control, "LED control: l <id[0:16]> <0|1>");
+     ```
+   - Code de la fonction
+     ```c
+      int led_control(h_shell_t *h_shell, int argc, char **argv)
+      {
+      	int numero;
+      	int size;
+      	numero = atoi(argv[1]);
+      	if (argc==3)
+      	{
+      		if ((numero > 8) && (numero < 17)){
+      			if (numero > 8)
+      			{
+      				Select_LED('B', 16-numero,atoi(argv[2]));
+      			}
+      			else if (numero < 8)
+      			{
+      				int state = atoi(argv[2]);
+      				Select_LED('A', numero,state);
+      			}
+      			else {
+      				size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"[N>16] ! Il y a pas assez de led\r\n");
+      			}
+      			size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"LED OK\r\n");
+      			}
+      		else{
+      			size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"[N>16] ! Il y a pas assez de led\r\n");
+      		}
+      	}
+      	else if (argc==4)
+      	{
+      		numero = atoi(argv[1]) * 10 + atoi(argv[2]);
+      		if (numero < 17){
+      		Select_LED('B', 16-numero,atoi(argv[3]));
+      		size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"LED OK\r\n");
+      		}
+      		else{
+      			size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"[N>16] ! Il y a pas assez de led\r\n");
+      		}
+      	}
+      	else
+      	{
+      		size = snprintf(h_shell->print_buffer,BUFFER_SIZE,"Écrire : l <id[0:16]> <0|1>\r\n");
+      	}
+      	drv_uart_transmit(h_shell->print_buffer,size);
+      	return 0;
+      }
+     ```
 ---
 
 ## 3. Le CODEC Audio SGTL5000
