@@ -12,6 +12,8 @@
 
 ---
 
+## TOC
+
 ## 🎯 Objectifs du TP
 
 > **But :** Concevoir et analyser un système d’autoradio analogique simplifié comprenant :
@@ -193,7 +195,7 @@ On a commencé à coder le driver du GPIO_Expander
    	    }
    }
    ```
-   On observe bine que chaque LEDs sont allumer et une seule s'éteint, chacun à sont tour pendant 200ms, puis se rallume -> effet de défilement.
+   On observe bine que chaque LEDs sont allumés et une seule s'éteint, chacun à sont tour pendant 200ms, puis se rallume -> effet de défilement.
 
 ### 2.3 Driver
 
