@@ -11,7 +11,7 @@
 👨‍🏫 **Encadrant :** [L.Fiack](https://github.com/lfiack)  
 📅 **Séances de TP :** 
 - séance 1 : 13 novembre 2025 
-- séance 2 :
+- séance 2 : 21 novembre 2025
 - séance 3 :
 - séance 4 :
 
