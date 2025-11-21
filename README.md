@@ -13,6 +13,15 @@
 ---
 
 ## TOC
+- [🎓 TP de Synthèse — Autoradio](#-tp-de-synthèse--autoradio)
+  - [👥 Équipe](#-équipe)
+  - [🎯 Objectifs du TP](#-objectifs-du-tp)
+  - [1. Démarrage](#1-démarrage)
+  - [2. Le GPIO Expander et le VU-Mètre](#2-le-gpio-expander-et-le-vu-metre)
+  - [3. Le CODEC Audio SGTL5000](#3-le-codec-audio-sgtl5000)
+  - [4. Visualisation](#4.-visualtion)
+  - [5. Filtre RC](#5.-filtre-rc)
+  - [6. Programmation d'un effet audio](#6.-programmation-d'un-effet-audio)
 
 ## 🎯 Objectifs du TP
 
@@ -289,3 +298,12 @@ Les configurations suivantes sont à faire sur le logiciel STM32CubeIDE dans la 
 9. Avant de passer à la suite, il est nécessaire d’activer l’horloge MCLK pour que le CODEC fonctionne. Pour cela, dans la fonction main(), après les initialisations, ajoutez la ligne suivante :
 ```c
 __HAL_SAI_ENABLE(&hsai_BlockA2);
+```
+
+## 4. Visualisation
+
+## 5. Filtre RC
+
+## 6. Programmation d'un effet audio
+
+
