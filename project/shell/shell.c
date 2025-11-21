@@ -14,23 +14,23 @@
 
 static char uart_read(h_shell_t * h_shell) {
 	char c;
-//
-//	//HAL_UART_Receive(&UART_DEVICE, (uint8_t*)(&c), 1, HAL_MAX_DELAY);
-//	HAL_UART_Receive_IT(h_shell->huart, (uint8_t*)(&c), 1);
-//
-//	// bloquer la tache jusqu'à reception de caractère
-//	xSemaphoreTake(h_shell->sem_uart_rx, portMAX_DELAY);
-//
-//	return c;
+	//
+	//	//HAL_UART_Receive(&UART_DEVICE, (uint8_t*)(&c), 1, HAL_MAX_DELAY);
+	//	HAL_UART_Receive_IT(h_shell->huart, (uint8_t*)(&c), 1);
+	//
+	//	// bloquer la tache jusqu'à reception de caractère
+	//	xSemaphoreTake(h_shell->sem_uart_rx, portMAX_DELAY);
+	//
+	//	return c;
 	h_shell->drv_shell.drv_shell_receive(&c, 1);
 
 	return c;
 }
 
 static int uart_write(h_shell_t * h_shell, char * s, uint16_t size) {
-//	HAL_UART_Transmit(h_shell->huart, (uint8_t*)s, size, HAL_MAX_DELAY);
-//
-//	return size;
+	//	HAL_UART_Transmit(h_shell->huart, (uint8_t*)s, size, HAL_MAX_DELAY);
+	//
+	//	return size;
 
 	h_shell->drv_shell.drv_shell_transmit(s, size);
 	return size;

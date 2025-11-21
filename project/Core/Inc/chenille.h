@@ -1,16 +1,14 @@
 /*
- * LED_GPIO_Expander.h
+ * chenille.h
  *
- *  Created on: Nov 13, 2025
+ *  Created on: 21 nov. 2025
  *      Author: hugoc
  */
 
-#ifndef LED_GPIO_EXPANDER_H_
-#define LED_GPIO_EXPANDER_H_
+#ifndef INC_CHENILLE_H_
+#define INC_CHENILLE_H_
 
-
-#include "stm32l4xx_hal.h"
-
+#include "main.h"
 // MCP23S17 Definitions
 #define MCP23S17_ADDR 0x00 // Assuming hardware address 000 (A2=A1=A0=0)
 #define MCP23S17_WRITE (0x40 | (MCP23S17_ADDR << 1)) // Opcode for write
@@ -40,4 +38,4 @@ void MCP23S17_WriteRegister(uint8_t reg, uint8_t value);
 uint8_t MCP23S17_ReadRegister(uint8_t reg);
 void MCP23S17_SetAllPinsHigh(void);
 
-#endif /* LED_GPIO_EXPANDER_H_ */
+#endif /* INC_CHENILLE_H_ */

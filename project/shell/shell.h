@@ -20,8 +20,6 @@
 typedef uint8_t (* drv_shell_transmit_t)(char * pData, uint16_t size);
 typedef uint8_t (* drv_shell_receive_t)(char * pData, uint16_t size);
 
-typedef int (* shell_func_pointer_t)(struct h_shell_struct * h_shell, int argc, char ** argv);
-
 typedef struct drv_shell_struct
 {
 	drv_shell_transmit_t drv_shell_transmit;
@@ -29,6 +27,8 @@ typedef struct drv_shell_struct
 } drv_shell_t;
 
 struct h_shell_struct;
+
+typedef int (* shell_func_pointer_t)(struct h_shell_struct * h_shell, int argc, char ** argv);
 
 typedef struct{
 	char c;

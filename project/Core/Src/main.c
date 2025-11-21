@@ -29,7 +29,7 @@
 #include <stdlib.h> // pour atoi function
 
 #include "shell.h"
-#include "LED_GPIO_Expander.h"
+#include "chenille.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -150,20 +150,23 @@ void task_led(void * unused)
 
 void task_chenillard(void *unused)
 {
-//    uint8_t led_state = 0x01;
-//    for (;;)
-//    {
-//        // Allume la LED correspondante sur MCP23S17 port A
-//        MCP23S17_WriteReg(0x12, led_state);
+	    uint8_t led_state = 0x01;
+	    for (;;)
+	    {
+//	        // Allume la LED correspondante sur MCP23S17 port A
+//	    	MCP23S17_WriteRegister(0x12, led_state);
 //
-//        // Décale la LED à allumer
-//        led_state <<= 1;
-//        if (led_state == 0) {
-//            led_state = 0x01;  // Reset au début du chenillard
-//        }
+//	        // Décale la LED à allumer
+//	        led_state <<= 1;
+//	        if (led_state == 0) {
+//	            led_state = 0x01;  // Reset au début du chenillard
+//	        }
 //
-//        vTaskDelay(pdMS_TO_TICKS(200));  // délai 200 ms
-//    }
+//	        vTaskDelay(pdMS_TO_TICKS(200));  // délai 200 ms
+//
+
+	        MCP23S17_SetAllPinsHigh();
+	    }
 }
 
 
@@ -229,6 +232,8 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
+  MCP23S17_Init();
+
 	printf("==== Autoradio Hugo Nelven Start ====\r\n");
 	if (xTaskCreate(task_shell, "Shell", 512, NULL, 1, NULL) != pdPASS)
 	{

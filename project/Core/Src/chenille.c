@@ -1,5 +1,10 @@
-#include "LED_GPIO_Expander.h"
-
+/*
+ * chenille.c
+ *
+ *  Created on: 21 nov. 2025
+ *      Author: hugoc
+ */
+#include "chenille.h"
 
 // Initialize MCP23S17
 void MCP23S17_Init(void) {
@@ -48,8 +53,6 @@ MCP23S17_WriteRegister(MCP23S17_GPIOB, 0x1); // Set all GPIOB high
 // Alternatively, use OLAT if needed: MCP23S17_WriteRegister(MCP23S17_OLATA, 0xFF);
 }
 
-// In your main function, after HAL_Init() and SPI3 init:
 // MCP23S17_Init();
-// Then call MCP23S17_SetAllPinsHigh() when needed.
 
 
