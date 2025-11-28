@@ -356,6 +356,8 @@ void task_i2c_update(void *unused)
 
 <img width="800" height="503" alt="scope_2" src="https://github.com/user-attachments/assets/2978dd5a-450b-430f-9d37-b81f7aeb1bb0" />
 
+On fait volontairement du pooling pour observer plus facilement les trames I2C. Dans la suite du TP, il faut décommenter "vTaskDelay" pour que les autres tâches puissent se lancer. 
+
 4. Montrez à l’enseignant
 
 # 4. Visualisation
