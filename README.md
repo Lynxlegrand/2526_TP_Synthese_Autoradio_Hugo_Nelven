@@ -359,6 +359,8 @@ void task_i2c_update(void *unused)
 On fait volontairement du pooling pour observer plus facilement les trames I2C. Dans la suite du TP, il faut décommenter "vTaskDelay" pour que les autres tâches puissent se lancer. 
 
 4. Montrez à l’enseignant
+5. Cherchez dans la documentation du `SGTL5000` la valeur à assigner aux
+registres suivants :
 
 # 4. Visualisation
 
