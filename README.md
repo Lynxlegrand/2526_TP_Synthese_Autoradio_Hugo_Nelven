@@ -359,8 +359,119 @@ void task_i2c_update(void *unused)
 On fait volontairement du pooling pour observer plus facilement les trames I2C. Dans la suite du TP, il faut décommenter "vTaskDelay" pour que les autres tâches puissent se lancer. 
 
 4. Montrez à l’enseignant
-5. Cherchez dans la documentation du `SGTL5000` la valeur à assigner aux
-registres suivants :
+5. On Cherche dans la documentation du `SGTL5000` la valeur à assigner aux
+registres suivants, ce qu'on ne trouve pas dans notre context précis donc on s'est basé sur [driver-sgtl5000
+](https://github.com/hi-squeaky-things/driver-sgtl5000/tree/main).
+6. Créez une paire de fichier sgtl5000.c / sgtl5000.h
+7. Dans le fichier sgtl5000.c, créez une fonction d’initialisation.
+8. Dans cette fonction, écrivez le code permettant de configurer ces registres :
+
+> ![Important]
+> sgtl5000.h
+```c
+// ===================== REGISTRES MAX98357 / CODEC ======================
+
+// LINREG CTRL
+#define REG_LINREG_CTRL_ADDR      0x0026
+#define REG_LINREG_CTRL_VALUE     0x0060   // 0b0000'0000'0110'0000
+// Explication : Active la régulation interne nécessaire à l’alimentation analogique.
+
+// ANA POWER
+#define REG_ANA_POWER_ADDR        0x0030
+#define REG_ANA_POWER_VALUE       0x00BB   // 0b0000'0000'1011'1011
+// Explication : Active les blocs analogiques nécessaires (LDO, drivers, DAC analogique).
+
+// DIG POWER
+#define REG_DIG_POWER_ADDR        0x0002
+#define REG_DIG_POWER_VALUE       0x0063   // 0b0000'0000'0110'0011
+// Bits :
+// 6 = ADC_POWERUP       = 0 → ADC OFF
+// 5 = DAC_POWERUP       = 1 → DAC ON
+// 4 = DAP_POWERUP       = 1 → DAP ON
+// 1 = I2S_OUT_POWERUP   = 1 → I2S OUT ON
+// 0 = I2S_IN_POWERUP    = 1 → I2S IN ON
+// Explication : Active DAC + DAP + I2S IN/OUT pour un flux audio complet.
+
+// CLK CTRL
+#define REG_CLK_CTRL_ADDR         0x0004
+#define REG_CLK_CTRL_VALUE        0x0004   // 0b0000'0000'0000'0100
+// Explication : Configuration de l’horloge digitale (MCLK, BCLK...).
+
+// I2S CTRL
+#define REG_I2S_CTRL_ADDR         0x0006
+#define REG_I2S_CTRL_VALUE        0x0030   // 0b0000'0000'0011'0000
+// Explication : Mode I2S standard, 16/24/32 bits selon datasheet.
+
+// SSS CTRL
+#define REG_SSS_CTRL_ADDR         0x000A
+#define REG_SSS_CTRL_VALUE        0x0011   // 0b0000'0000'0001'0001
+// Explication : Route l’audio I2S vers le DAC.
+
+// ADCDAC CTRL
+#define REG_ADCDAC_CTRL_ADDR      0x000E
+#define REG_ADCDAC_CTRL_VALUE     0x0090   // 0b0000'0000'1001'0000
+// Explication : Unmute du DAC.
+
+// DAC VOLUME
+#define REG_DAC_VOL_ADDR          0x0010
+#define REG_DAC_VOL_VALUE         0x3C3C   // 0b0011'1100'0011'1100
+// Explication : Volume DAC = 0 dB (gain neutre)
+```
+
+> ![Important]
+> sgtl5000.c
+
+```c
+/**
+ * @brief  Écrit un registre 16 bits dans le SGTL5000
+ */
+static HAL_StatusTypeDef CODEC_Write(uint16_t reg, uint16_t value)
+{
+    uint8_t data[2];
+    data[0] = (value >> 8) & 0xFF;   // MSB
+    data[1] = value & 0xFF;          // LSB
+
+    return HAL_I2C_Mem_Write(&hi2c2,
+                             (uint16_t)CODEC_I2C_ADDR,
+                             reg,
+                             I2C_MEMADD_SIZE_16BIT,
+                             data,
+                             2,
+                             HAL_MAX_DELAY);
+}
+
+/**
+ * @brief  Initialisation complète du SGTL5000
+ */
+void Init_sgtl5000(void)
+{
+    // LINREG CTRL
+    CODEC_Write(REG_LINREG_CTRL_ADDR, REG_LINREG_CTRL_VALUE);
+
+    // ANA POWER
+    CODEC_Write(REG_ANA_POWER_ADDR, REG_ANA_POWER_VALUE);
+
+    vTaskDelay(pdMS_TO_TICKS(100));
+
+    // DIG POWER
+    CODEC_Write(REG_DIG_POWER_ADDR, REG_DIG_POWER_VALUE);
+
+    // CLK CTRL
+    CODEC_Write(REG_CLK_CTRL_ADDR, REG_CLK_CTRL_VALUE);
+
+    // I2S CTRL
+    CODEC_Write(REG_I2S_CTRL_ADDR, REG_I2S_CTRL_VALUE);
+
+    // SSS CTRL
+    CODEC_Write(REG_SSS_CTRL_ADDR, REG_SSS_CTRL_VALUE);
+
+    // ADCDAC CTRL
+    CODEC_Write(REG_ADCDAC_CTRL_ADDR, REG_ADCDAC_CTRL_VALUE);
+
+    // DAC Volume
+    CODEC_Write(REG_DAC_VOL_ADDR, REG_DAC_VOL_VALUE);
+}
+```
 
 # 4. Visualisation
 
