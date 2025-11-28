@@ -309,8 +309,8 @@ On active l'`I2C2_SDA`.
 ```c
 __HAL_SAI_ENABLE(&hsai_BlockA2);
 ```
-> Sans cette ligne, l’I2C ne fonctionne pas, parce que le CODEC ne
-reçoit pas d’horloge !
+> [!CAUTION]
+> Sans cette ligne, l’I2C ne fonctionne pas, parce que le CODEC ne reçoit pas d’horloge !
 
 ## 3.2 Configuration du CODEC par l’I2C
 
