@@ -366,7 +366,7 @@ registres suivants, ce qu'on ne trouve pas dans notre context précis donc on s'
 7. Dans le fichier sgtl5000.c, créez une fonction d’initialisation.
 8. Dans cette fonction, écrivez le code permettant de configurer ces registres :
 
-> ![Important]
+> ![IMPORTANT]
 > sgtl5000.h
 ```c
 // ===================== REGISTRES MAX98357 / CODEC ======================
@@ -418,7 +418,7 @@ registres suivants, ce qu'on ne trouve pas dans notre context précis donc on s'
 // Explication : Volume DAC = 0 dB (gain neutre)
 ```
 
-> ![Important]
+> ![IMPORTANT]
 > sgtl5000.c
 
 ```c
