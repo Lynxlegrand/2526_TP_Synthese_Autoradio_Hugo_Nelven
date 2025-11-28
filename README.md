@@ -22,7 +22,7 @@
 - [5. Filtre RC](#5.-filtre-rc)
 - [6. Programmation d'un effet audio](#6.-programmation-d'un-effet-audio)
 
-## 🎯 Objectifs du TP
+# 🎯 Objectifs du TP
 
 > **But :** Concevoir et analyser un système d’autoradio analogique simplifié comprenant :
 >
@@ -33,7 +33,7 @@
 > Ce TP vise à mettre en œuvre les compétences acquises en électronique analogique et en traitement du signal.
 ---
 
-## 1. Démarrage
+# 1. Démarrage
 
 1. Créez un projet pour la carte NUCLEO_L476RG. Initialisez les périphériques avec leur mode par défaut, mais n’activez pas la BSP.
    - Cible : `NUCLEO-L476RG`
@@ -155,9 +155,9 @@ https://github.com/lfiack/rtos_td_shell
 
 ---
 
-## 2. Le GPIO Expander et le VU-Metre
+# 2. Le GPIO Expander et le VU-Metre
 
-### 2.1 Configuration
+## 2.1 Configuration
 
 1. Quelle est la référence du GPIO Expander ? Vous aurez besoin de sa datasheet, téléchargez-la.
 
@@ -177,7 +177,7 @@ Pour activer le SPI, il faut se rendre dans l'ioc et activer les SCK/MISO/MOSI/C
 
 On a commencé à coder le driver du GPIO_Expander
 
-### 2.2 Tests
+## 2.2 Tests
 
 1. Faites clignoter une ou plusieurs LED.
 
@@ -205,7 +205,7 @@ On a commencé à coder le driver du GPIO_Expander
    ```
    On observe bine que chaque LEDs sont allumés et une seule s'éteint, chacun à sont tour pendant 200ms, puis se rallume -> effet de défilement.
 
-### 2.3 Driver
+## 2.3 Driver
 
 1. Écrivez un driver pour piloter les LED. Utilisez une structure.
 ![WhatsApp Image 2025-11-21 à 16 09 46_89199db1](https://github.com/user-attachments/assets/6b336a5f-9ceb-4ce8-b2f5-bb9adc20f984)
@@ -265,44 +265,61 @@ On a commencé à coder le driver du GPIO_Expander
      ```
 ---
 
-## 3. Le CODEC Audio SGTL5000
+# 3. Le CODEC Audio SGTL5000
 
-### 3.1 Configuration préalables
+## 3.1 Configuration préalables
 
-Le CODEC a besoin de deux protocoles de communication :  
-— L’I2C pour la configuration,  
-— L’I2S pour le transfert des échantillons audio.  
+Le CODEC a besoin de deux protocoles de communication : 
 
-Les configurations suivantes sont à faire sur le logiciel STM32CubeIDE dans la partie graphique CubeMX. Le protocole I2S est géré par le périphérique SAI (Serial Audio Interface).
+- L’`I2C` pour la configuration,  
+- L’`I2S` pour le transfert des échantillons audio.  
 
-1. Quelles pins sont utilisées pour l’I2C ? À quel I2C cela correspond dans le STM32 ?
-2. Activez l’I2C correspondant, laissez la configuration par défaut.
+Les configurations suivantes sont à faire sur le logiciel STM32CubeIDE dans la partie graphique CubeMX. Le protocole `I2S` est géré par le périphérique SAI (Serial Audio Interface).
+
+1. Quelles pins sont utilisées pour l’`I2C` ? À quel `I2C` cela correspond dans le STM32 ?
+2. Activez l’`I2C` correspondant, laissez la configuration par défaut.
 3. Configurez le SAI2 :
-   - SAI A : Master with Master Clock Out,
+   - `SAI A` : Master with Master Clock Out,
    - Cochez I2S/PCM protocol,
-   - SAI B : Synchronous Slave,
+   - `SAI B` : Synchronous Slave,
    - Cochez I2S/PCM protocol.
 
 4. Si nécessaire, déplacez les signaux sur les bonnes broches. Vous pouvez déplacer une broche avec un [Ctrl+Clic Gauche]. Les signaux du SAI doivent être connectés au broches suivantes :
-   - PB12 : SAI2_FS_A
-   - PB13 : SAI2_SCK_A
-   - PB14 : SAI2_MCLK_A
-   - PB15 : SAI2_SD_A
-   - PC12 : SAI2_SD_B
+   - `PB12` : `SAI2_FS_A`
+   - `PB13` : `SAI2_SCK_A`
+   - `PB14` : `SAI2_MCLK_A`
+   - `PB15` : `SAI2_SD_A`
+   - `PC12` : `SAI2_SD_B`
 
-5. Dans l’onglet Clock Configuration, configurez PLLSAI1 pour obtenir la fréquence To SAI2 à 12.235294 MHz.
-6. Configurez les blocs SAI A et SAI B de la manière suivante :
+5. Dans l’onglet Clock Configuration, configurez `PLLSAI1` pour obtenir la fréquence To `SAI2` à 12.235294 MHz.
+6. Configurez les blocs `SAI A` et `SAI B` de la manière suivante :
 7. Activez les interruptions.
-8. Configurez le DMA pour le SAI A et le SAI B. Activez le mode circulaire.
-9. Avant de passer à la suite, il est nécessaire d’activer l’horloge MCLK pour que le CODEC fonctionne. Pour cela, dans la fonction main(), après les initialisations, ajoutez la ligne suivante :
+8. Configurez le DMA pour le `SAI A` et le `SAI B`. Activez le mode circulaire.
+9. Avant de passer à la suite, il est nécessaire d’activer l’horloge `MCLK` pour que le CODEC fonctionne. Pour cela, dans la fonction `main()`, après les initialisations, on ajoute la ligne suivante :
 ```c
 __HAL_SAI_ENABLE(&hsai_BlockA2);
 ```
+> Sans cette ligne, l’I2C ne fonctionne pas, parce que le CODEC ne
+reçoit pas d’horloge !
 
-## 4. Visualisation
+## 3.2 Configuration du CODEC par l’I2C
 
-## 5. Filtre RC
+1. À l’aide d’un oscilloscope, vérifiez la présence d’une horloge sur le signal MCLK :
 
-## 6. Programmation d'un effet audio
+![MCLK](./Docs/MCLK.png)
+
+- On remarque la fréquenc modulo le degré de précision de l'oscilloscope :
+
+$$\boxed{f_{MCLK}=12.26\text{ MHz}\simeq12.235294\text{ MHz}}$$
+
+2. À l’aide de la fonction `HAL_I2C_Mem_Read()`, récupérez la valeur du registre `CHIP_ID` (addresse `0x0000`). L’adresse `I2C` du CODEC est `0x14`.
+3. Observez les trames `I2C` à l’oscilloscope.
+4. Montrez à l’enseignant
+
+# 4. Visualisation
+
+# 5. Filtre RC
+
+# 6. Programmation d'un effet audio
 
 
