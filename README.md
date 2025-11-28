@@ -269,9 +269,10 @@ On a commencé à coder le driver du GPIO_Expander
 
 ## 3.1 Configuration préalables
 
-Le CODEC a besoin de deux protocoles de communication :  
-— L’I2C pour la configuration,  
-— L’I2S pour le transfert des échantillons audio.  
+Le CODEC a besoin de deux protocoles de communication : 
+
+- L’I2C pour la configuration,  
+- L’I2S pour le transfert des échantillons audio.  
 
 Les configurations suivantes sont à faire sur le logiciel STM32CubeIDE dans la partie graphique CubeMX. Le protocole I2S est géré par le périphérique SAI (Serial Audio Interface).
 
@@ -298,7 +299,8 @@ Les configurations suivantes sont à faire sur le logiciel STM32CubeIDE dans la 
 ```c
 __HAL_SAI_ENABLE(&hsai_BlockA2);
 ```
-
+> Sans cette ligne, l’I2C ne fonctionne pas, parce que le CODEC ne
+reçoit pas d’horloge !
 # 4. Visualisation
 
 # 5. Filtre RC
