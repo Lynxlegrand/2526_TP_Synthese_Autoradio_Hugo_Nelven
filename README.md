@@ -351,6 +351,7 @@ void task_i2c_update(void *unused)
 	}
 }
 ```
+- On récupère la valeur `0xA0` ➡ 160
 
 3. Observez les trames `I2C` à l’oscilloscope.
 
