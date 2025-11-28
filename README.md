@@ -277,7 +277,11 @@ Le CODEC a besoin de deux protocoles de communication :
 Les configurations suivantes sont à faire sur le logiciel STM32CubeIDE dans la partie graphique CubeMX. Le protocole `I2S` est géré par le périphérique SAI (Serial Audio Interface).
 
 1. Quelles pins sont utilisées pour l’`I2C` ? À quel `I2C` cela correspond dans le STM32 ?
+
+Les pins utilisées pour l'`I2C` sont 
+
 2. Activez l’`I2C` correspondant, laissez la configuration par défaut.
+
 3. Configurez le SAI2 :
    - `SAI A` : Master with Master Clock Out,
    - Cochez I2S/PCM protocol,
@@ -292,9 +296,13 @@ Les configurations suivantes sont à faire sur le logiciel STM32CubeIDE dans la 
    - `PC12` : `SAI2_SD_B`
 
 5. Dans l’onglet Clock Configuration, configurez `PLLSAI1` pour obtenir la fréquence To `SAI2` à 12.235294 MHz.
+
 6. Configurez les blocs `SAI A` et `SAI B` de la manière suivante :
+
 7. Activez les interruptions.
+
 8. Configurez le DMA pour le `SAI A` et le `SAI B`. Activez le mode circulaire.
+
 9. Avant de passer à la suite, il est nécessaire d’activer l’horloge `MCLK` pour que le CODEC fonctionne. Pour cela, dans la fonction `main()`, après les initialisations, on ajoute la ligne suivante :
 ```c
 __HAL_SAI_ENABLE(&hsai_BlockA2);
