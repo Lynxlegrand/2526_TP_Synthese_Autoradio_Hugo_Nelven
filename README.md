@@ -472,7 +472,15 @@ void Init_sgtl5000(void)
     CODEC_Write(REG_DAC_VOL_ADDR, REG_DAC_VOL_VALUE);
 }
 ```
+## 3.3 Signaux I2S
+1. Démarrez la réception et la transmission sur l’I2S avec le SAI :
+```c
+HAL_StatusTypeDef HAL_SAI_Receive_DMA(SAI_HandleTypeDef *hsai, uint8_t *pData, uint16_t Size)
+HAL_StatusTypeDef HAL_SAI_Transmit_DMA(SAI_HandleTypeDef *hsai, uint8_t *pData, uint16_t Size)
+```
+2. Observez à l’oscilloscope les diﬀérents signaux d’horloge.
 
+3. Montrez à l’enseignant.
 # 4. Visualisation
 
 # 5. Filtre RC
