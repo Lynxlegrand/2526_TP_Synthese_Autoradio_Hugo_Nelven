@@ -33,6 +33,7 @@
 
 #include "shell.h"
 #include "chenille.h"
+#include "sgtl5000.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -232,7 +233,7 @@ void task_i2c_update(void *unused)
 	    	Error_Handler();
 	    }
 
-//	    vTaskDelay(pdMS_TO_TICKS(100));
+	    vTaskDelay(pdMS_TO_TICKS(100));
 	}
 }
 
@@ -316,7 +317,7 @@ int main(void)
 		Error_Handler();
 	}
 
-
+	Init_sgtl5000();
 
 	printf("==== Autoradio Hugo Nelven Start ====\r\n");
 	if (xTaskCreate(task_shell, "Shell", 512, NULL, 1, NULL) != pdPASS)
