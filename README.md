@@ -323,7 +323,39 @@ reçoit pas d’horloge !
 $$\boxed{f_{MCLK}=12.26\text{ MHz}\simeq12.235294\text{ MHz}}$$
 
 2. À l’aide de la fonction `HAL_I2C_Mem_Read()`, récupérez la valeur du registre `CHIP_ID` (addresse `0x0000`). L’adresse `I2C` du CODEC est `0x14`.
+
+```c
+/* USER CODE BEGIN Private defines */
+#define CODEC_I2C_ADDR  0x14
+
+
+// REGISTRES
+#define CODEC_REG_CHIP_ID 0x0000
+/* USER CODE END Private defines */
+
+
+void task_i2c_update(void *unused)
+{
+    uint8_t id = 0;
+    HAL_StatusTypeDef ret;
+	for (;;)
+	{
+	    ret = HAL_I2C_Mem_Read(&hi2c2, (uint16_t)(CODEC_I2C_ADDR), (uint16_t)CODEC_REG_CHIP_ID, (uint16_t)I2C_MEMADD_SIZE_8BIT, &id, (uint16_t)sizeof(id), HAL_MAX_DELAY);
+
+	    if (ret != HAL_OK){
+	    	printf("error i2c read init\r\n");
+	    	Error_Handler();
+	    }
+
+//	    vTaskDelay(pdMS_TO_TICKS(100));
+	}
+}
+```
+
 3. Observez les trames `I2C` à l’oscilloscope.
+
+<img width="800" height="503" alt="scope_2" src="https://github.com/user-attachments/assets/2978dd5a-450b-430f-9d37-b81f7aeb1bb0" />
+
 4. Montrez à l’enseignant
 
 # 4. Visualisation
