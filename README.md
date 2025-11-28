@@ -279,20 +279,20 @@ Les configurations suivantes sont à faire sur le logiciel STM32CubeIDE dans la 
 1. Quelles pins sont utilisées pour l’`I2C` ? À quel `I2C` cela correspond dans le STM32 ?
 2. Activez l’`I2C` correspondant, laissez la configuration par défaut.
 3. Configurez le SAI2 :
->   - `SAI A` : Master with Master Clock Out,
->   - Cochez I2S/PCM protocol,
->   - `SAI B` : Synchronous Slave,
->   - Cochez I2S/PCM protocol.
+   - `SAI A` : Master with Master Clock Out,
+   - Cochez I2S/PCM protocol,
+   - `SAI B` : Synchronous Slave,
+   - Cochez I2S/PCM protocol.
 
 4. Si nécessaire, déplacez les signaux sur les bonnes broches. Vous pouvez déplacer une broche avec un [Ctrl+Clic Gauche]. Les signaux du SAI doivent être connectés au broches suivantes :
->   - `PB12` : `SAI2_FS_A`
->   - `PB13` : `SAI2_SCK_A`
->   - `PB14` : `SAI2_MCLK_A`
->   - `PB15` : `SAI2_SD_A`
->   - `PC12` : `SAI2_SD_B`
+   - `PB12` : `SAI2_FS_A`
+   - `PB13` : `SAI2_SCK_A`
+   - `PB14` : `SAI2_MCLK_A`
+   - `PB15` : `SAI2_SD_A`
+   - `PC12` : `SAI2_SD_B`
 
-5. Dans l’onglet Clock Configuration, configurez PLLSAI1 pour obtenir la fréquence To `SAI2` à 12.235294 MHz.
-6. Configurez les blocs SAI A et SAI B de la manière suivante :
+5. Dans l’onglet Clock Configuration, configurez `PLLSAI1` pour obtenir la fréquence To `SAI2` à 12.235294 MHz.
+6. Configurez les blocs `SAI A` et `SAI B` de la manière suivante :
 7. Activez les interruptions.
 8. Configurez le DMA pour le `SAI A` et le `SAI B`. Activez le mode circulaire.
 9. Avant de passer à la suite, il est nécessaire d’activer l’horloge `MCLK` pour que le CODEC fonctionne. Pour cela, dans la fonction `main()`, après les initialisations, on ajoute la ligne suivante :
@@ -309,6 +309,7 @@ reçoit pas d’horloge !
 ![MCLK](./Docs/MCLK.png)
 
 - On remarque la fréquenc modulo le degré de précision de l'oscilloscope :
+
 $$\boxed{f_{MCLK}=12.26\text{ MHz}\simeq12.235294\text{ MHz}}$$
 
 2. À l’aide de la fonction `HAL_I2C_Mem_Read()`, récupérez la valeur du registre `CHIP_ID` (addresse `0x0000`). L’adresse `I2C` du CODEC est `0x14`.
