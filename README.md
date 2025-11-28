@@ -278,9 +278,11 @@ Les configurations suivantes sont à faire sur le logiciel STM32CubeIDE dans la 
 
 1. Quelles pins sont utilisées pour l’`I2C` ? À quel `I2C` cela correspond dans le STM32 ?
 
-Les pins utilisées pour l'`I2C` sont 
+Les pins utilisées pour l'`I2C` sont `PB10` pour `I2C2_SCL` et `PB11` pour `I2C2_SDA`. Cette configuration correspond donc à l'`I2C2`. 
 
 2. Activez l’`I2C` correspondant, laissez la configuration par défaut.
+
+On active l'`I2C2_SDA`. 
 
 3. Configurez le SAI2 :
    - `SAI A` : Master with Master Clock Out,
