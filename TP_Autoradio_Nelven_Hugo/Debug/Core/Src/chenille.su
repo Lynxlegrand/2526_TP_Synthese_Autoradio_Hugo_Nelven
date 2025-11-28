@@ -1,7 +1,0 @@
-../Core/Src/chenille.c:27:6:MCP23S17_Init	8	static
-../Core/Src/chenille.c:49:6:MCP23S17_WriteRegister	24	static
-../Core/Src/chenille.c:61:9:MCP23S17_ReadRegister	32	static
-../Core/Src/chenille.c:77:6:MCP23S17_SetAllPinsHigh	8	static
-../Core/Src/chenille.c:83:6:MCP23S17_SetAllPinsLow	8	static
-../Core/Src/chenille.c:89:6:Select_LED	24	static
-../Core/Src/chenille.c:113:6:Clear_LED	24	static
