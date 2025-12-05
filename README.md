@@ -447,14 +447,11 @@ Et `LRCLK` à $48$ kHz
 // Code
 ```
 
-2. On observe bien un triangle pour $1$ kHz sauf quand on augmente on se rapproche d'un sinus.
+2. On observe bien un signal triangulaire :
 
-- $4$ kHz avec vue sur le dma 
-![4kHz](./Docs/triangle4kHzFull.png)
-- $4$ kHz
-![4kHz](./Docs/triangle4kHz.png)
-- $1$ kHz est bien triangulaire
-![4kHz](./Docs/triangle1kHz.png)
+![1kHz](./Docs/triangle.png)
+![1kHzZoome](./Docs/triangledezoome.png)
+
 
 ## 3.5 Bypass numérique
 
