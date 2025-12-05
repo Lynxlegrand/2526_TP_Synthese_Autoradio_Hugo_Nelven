@@ -441,6 +441,21 @@ Et `LRCLK` à $48$ kHz
 
 ## 3.4 Génération de signal audio
 
+1. Génération du signal triangulaire
+
+```c
+// Code
+```
+
+2. On observe bien un triangle pour $1$ kHz sauf quand on augmente on se rapproche d'un sinus.
+
+- $4$ kHz avec vue sur le dma 
+![4kHz](./Docs/triangle4kHzFull.png)
+- $4$ kHz
+![4kHz](./Docs/triangle4kHz.png)
+- $1$ kHz est bien triangulaire
+![4kHz](./Docs/triangle1kHz.png)
+
 ## 3.5 Bypass numérique
 
 # 4. Visualisation
