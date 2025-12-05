@@ -10,7 +10,7 @@
 
 
 #include "sgtl5000.h"
-
+#include "string.h"
 
 
 

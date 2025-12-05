@@ -47,3 +47,49 @@ void sgtl5000_fill_triangle(h_sgtl5000_t *h_sgtl5000, int16_t amplitude)
     }
 }
 
+
+
+//void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai)
+//{
+//    if(hsai == sgtl5000.hsai_rx)
+//    {
+//        // Copier première moitié du buffer
+//        int half = (AUDIO_BUFFER_LENGTH * AUDIO_NUM_CHANNELS * AUDIO_DOUBLE_BUFFER) / 2;
+//        for(int i = 0; i < half; i++)
+//        {
+//            sgtl5000.sai_tx_buffer[i] = sgtl5000.sai_rx_buffer[i];
+//        }
+//    }
+//}
+//
+//void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)
+//{
+//    if(hsai == sgtl5000.hsai_rx)
+//    {
+//        // Copier seconde moitié du buffer
+//        int half = (AUDIO_BUFFER_LENGTH * AUDIO_NUM_CHANNELS * AUDIO_DOUBLE_BUFFER) / 2;
+//        for(int i = 0; i < half; i++)
+//        {
+//            sgtl5000.sai_tx_buffer[half + i] = sgtl5000.sai_rx_buffer[half + i];
+//        }
+//    }
+//}
+
+//// Exemple callback DMA réception moitié terminée
+//void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai)
+//{
+//    // Copier la première moitié du buffer reçu dans la première moitié du buffer TX
+//    memcpy(sgtl5000.sai_tx_buffer, sgtl5000.sai_rx_buffer,
+//    		(AUDIO_BUFFER_LENGTH * AUDIO_NUM_CHANNELS * sizeof(int16_t)));
+//}
+//
+//// Callback DMA réception complète
+void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)
+{
+    // Copier la deuxième moitié du buffer reçu dans la deuxième moitié du buffer TX
+    memcpy(sgtl5000.sai_rx_buffer + AUDIO_BUFFER_LENGTH * AUDIO_NUM_CHANNELS,
+           sgtl5000.sai_tx_buffer + AUDIO_BUFFER_LENGTH * AUDIO_NUM_CHANNELS,
+           (AUDIO_BUFFER_LENGTH * AUDIO_NUM_CHANNELS * sizeof(int16_t)));
+}
+
+
