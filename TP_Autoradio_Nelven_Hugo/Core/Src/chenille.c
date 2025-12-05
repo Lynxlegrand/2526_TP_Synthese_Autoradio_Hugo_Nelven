@@ -118,3 +118,5 @@ void Clear_LED(char port, uint8_t led) {
     current &= ~(1 << led);  // Éteint la LED
     MCP23S17_WriteRegister(reg, current);
 }
+
+

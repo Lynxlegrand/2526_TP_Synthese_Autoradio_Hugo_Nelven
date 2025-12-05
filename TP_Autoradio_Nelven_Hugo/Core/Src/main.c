@@ -34,6 +34,7 @@
 #include "shell.h"
 #include "chenille.h"
 #include "sgtl5000.h"
+#include "sgtl5000_signals.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -243,6 +244,9 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
 	Error_Handler();
 }
 
+
+
+
 //void configureTimerForRunTimeStats(void)
 //{
 //	// Démarrer un timer
@@ -310,6 +314,7 @@ int main(void)
 	MCP23S17_SetAllPinsLow();
 	HAL_Delay(1000);
 	MCP23S17_SetAllPinsHigh();
+
 	__HAL_SAI_ENABLE(&hsai_BlockA2);
 
 	if (CODEC_Init()!= HAL_OK){
@@ -317,7 +322,19 @@ int main(void)
 		Error_Handler();
 	}
 
-	Init_sgtl5000();
+
+
+	if (sgtl5000_init(&sgtl5000) != HAL_OK) {
+	    Error_Handler();
+	}
+
+	// Démarre la transmission DMA
+	if (sgtl5000_start(&sgtl5000) != HAL_OK) {
+	    Error_Handler();
+	}
+
+
+	sgtl5000_fill_triangle(&sgtl5000, 12000);
 
 	printf("==== Autoradio Hugo Nelven Start ====\r\n");
 	if (xTaskCreate(task_shell, "Shell", 512, NULL, 1, NULL) != pdPASS)

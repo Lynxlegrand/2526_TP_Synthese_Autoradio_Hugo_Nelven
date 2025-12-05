@@ -23,6 +23,7 @@
 
 /* USER CODE BEGIN 0 */
 
+
 /* USER CODE END 0 */
 
 SAI_HandleTypeDef hsai_BlockA2;
@@ -35,7 +36,6 @@ void MX_SAI2_Init(void)
 {
 
   /* USER CODE BEGIN SAI2_Init 0 */
-
   /* USER CODE END SAI2_Init 0 */
 
   /* USER CODE BEGIN SAI2_Init 1 */
