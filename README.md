@@ -359,7 +359,6 @@ void task_i2c_update(void *unused)
 
 On fait volontairement du pooling pour observer plus facilement les trames I2C. Dans la suite du TP, il faut décommenter "vTaskDelay" pour que les autres tâches puissent se lancer. 
 
-4. Montrez à l’enseignant
 5. On Cherche dans la documentation du `SGTL5000` la valeur à assigner aux
 registres suivants, ce qu'on ne trouve pas dans notre context précis donc on s'est basé sur [driver-sgtl5000
 ](https://github.com/hi-squeaky-things/driver-sgtl5000/tree/main).
@@ -428,9 +427,18 @@ registres suivants, ce qu'on ne trouve pas dans notre context précis donc on s'
 HAL_StatusTypeDef HAL_SAI_Receive_DMA(SAI_HandleTypeDef *hsai, uint8_t *pData, uint16_t Size)
 HAL_StatusTypeDef HAL_SAI_Transmit_DMA(SAI_HandleTypeDef *hsai, uint8_t *pData, uint16_t Size)
 ```
+Ce code est implémenté directement dans le `sgtl5000.c`.
+
 2. Observez à l’oscilloscope les diﬀérents signaux d’horloge.
 
-3. Montrez à l’enseignant.
+On observe la même `MCLK` que précédement et aussi `SCLK` :
+
+![SLCK](./Docs/SCLK.png)
+
+## 3.4 Génération de signal audio
+
+## 3.5 Bypass numérique
+
 # 4. Visualisation
 
 # 5. Filtre RC
