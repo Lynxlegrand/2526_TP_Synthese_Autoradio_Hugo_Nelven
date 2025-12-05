@@ -435,6 +435,10 @@ On observe la même `MCLK` que précédement et aussi `SCLK` :
 
 ![SLCK](./Docs/SCLK.png)
 
+Et `LRCLK` à $48$ kHz
+
+![LRCLK](./Docs/LRCLK.png)
+
 ## 3.4 Génération de signal audio
 
 ## 3.5 Bypass numérique
