@@ -70,9 +70,9 @@ void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)
     if (hsai != sgtl5000.hsai_rx) return;
 
     // zone source : deuxième moitié du buffer de réception
-    int16_t *src = sgtl5000.sai_rx_buffer + AUDIO_BUFFER_LENGTH * AUDIO_NUM_CHANNELS;
+    int16_t *src = sgtl5000.sai_rx_buffer;
     // zone destination : deuxième moitié du buffer de transmission
-    int16_t *dst = sgtl5000.sai_tx_buffer + AUDIO_BUFFER_LENGTH * AUDIO_NUM_CHANNELS;
+    int16_t *dst = sgtl5000.sai_tx_buffer;
 
     size_t samples = (size_t)AUDIO_BUFFER_LENGTH * (size_t)AUDIO_NUM_CHANNELS;
 
