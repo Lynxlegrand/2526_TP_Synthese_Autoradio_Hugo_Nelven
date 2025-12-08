@@ -54,6 +54,7 @@ extern MCP23S17_HandleTypeDef hmcp23s17;
 // ===================================================================
 // Fonctions publiques
 // ===================================================================
-
+// Convertit amplitude (int16) vers 0..8 LEDs
+void VU_Update(int16_t *buffer, size_t samples);
 
 #endif /* INC_CHENILLE_H_ */

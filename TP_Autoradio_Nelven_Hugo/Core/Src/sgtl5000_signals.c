@@ -48,37 +48,34 @@ void sgtl5000_fill_triangle(h_sgtl5000_t *h_sgtl5000, int16_t amplitude)
 
 void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai)
 {
-    // Vérifier que la callback provient du SAI RX qu'on utilise
     if (hsai != sgtl5000.hsai_rx) return;
 
-    // zone source : première moitié du buffer de réception
     int16_t *src = sgtl5000.sai_rx_buffer;
-    // zone destination : première moitié du buffer de transmission
     int16_t *dst = sgtl5000.sai_tx_buffer;
 
-    size_t samples = (size_t)AUDIO_BUFFER_LENGTH * (size_t)AUDIO_NUM_CHANNELS;
+    size_t samples = (size_t)AUDIO_BUFFER_LENGTH * (size_t)AUDIO_NUM_CHANNELS * (size_t) AUDIO_DOUBLE_BUFFER;
 
-    // copie RX -> TX (loopback)
     memcpy(dst, src, samples * sizeof(int16_t));
 
-    HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
+    // --- VU meter sur 1ère moitié ---
+    VU_Update(src, samples);
 
+    HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
 }
 
 void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)
 {
     if (hsai != sgtl5000.hsai_rx) return;
 
-    // zone source : deuxième moitié du buffer de réception
     int16_t *src = sgtl5000.sai_rx_buffer;
-    // zone destination : deuxième moitié du buffer de transmission
     int16_t *dst = sgtl5000.sai_tx_buffer;
 
-    size_t samples = (size_t)AUDIO_BUFFER_LENGTH * (size_t)AUDIO_NUM_CHANNELS;
+    size_t samples = (size_t)AUDIO_BUFFER_LENGTH * (size_t)AUDIO_NUM_CHANNELS * (size_t) AUDIO_DOUBLE_BUFFER;
 
-    // copie RX -> TX (loopback)
     memcpy(dst, src, samples * sizeof(int16_t));
+
+    // --- VU meter sur 2ème moitié ---
+    VU_Update(src + samples/2, samples/2);
+
     HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
-
 }
-

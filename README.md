@@ -444,7 +444,42 @@ Et `LRCLK` à $48$ kHz
 1. Génération du signal triangulaire
 
 ```c
-// Code
+void sgtl5000_fill_triangle(h_sgtl5000_t *h_sgtl5000, int16_t amplitude)
+{
+    if (!h_sgtl5000 || amplitude <= 0) return;
+
+    const int channels = AUDIO_NUM_CHANNELS;       // 2 canaux
+    const int frames = AUDIO_BUFFER_LENGTH;        // taille du buffer DMA utilisé à chaque fois
+
+    // Calcul du nombre d’échantillons par période
+    int period = frames;   // ici on veut 1 période par buffer
+    if (period < 2) period = 2;
+
+    for (int frame = 0; frame < frames; ++frame)
+    {
+        int pos = frame % period;
+        int32_t sample = 0;
+
+        int half = period / 2;
+        if (pos < half)
+        {
+            sample = -amplitude + (2 * amplitude * pos) / half;
+        }
+        else
+        {
+            int pos2 = pos - half;
+            int half2 = period - half;
+            sample = amplitude - (2 * amplitude * pos2) / half2;
+        }
+
+        // Interleave LR LR ...
+        int base_index = frame * channels;
+        for (int ch = 0; ch < channels; ++ch)
+        {
+            h_sgtl5000->sai_tx_buffer[base_index + ch] = (int16_t)sample;
+        }
+    }
+}
 ```
 
 2. On observe bien un signal triangulaire :
@@ -452,10 +487,112 @@ Et `LRCLK` à $48$ kHz
 ![1kHz](./Docs/triangle.png)
 ![1kHzZoome](./Docs/triangledezoome.png)
 
+On peut même l'écouter avec un casque.
 
 ## 3.5 Bypass numérique
 
+On modifie dans `sgtl5000_init()` les registres pour activer le micro :
+
+```c
+   //	mask = 0x0004;	// Unmute all + SELECT_ADC = LINEIN
+	mask = 0x0000;	// Unmute all + SELECT_ADC = MIC
+
+	mask = 0x0252;	// BIAS_RESISTOR = 2, BIAS_VOLT = 5, GAIN = +40dB
+	sgtl5000_i2c_write_register(h_sgtl5000, SGTL5000_CHIP_MIC_CTRL, mask);
+```
+
+Puis on code les callback du DMA pour les `SAI` où l'on a juster à copier le `sai_rx_buffer` dans le `sai_tx_buffer` :
+
+```c
+void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai)
+{
+    // Vérifier que la callback provient du SAI RX qu'on utilise
+    if (hsai != sgtl5000.hsai_rx) return;
+
+    // zone source : première moitié du buffer de réception
+    int16_t *src = sgtl5000.sai_rx_buffer;
+    // zone destination : première moitié du buffer de transmission
+    int16_t *dst = sgtl5000.sai_tx_buffer;
+
+    size_t samples = (size_t)AUDIO_BUFFER_LENGTH * (size_t)AUDIO_NUM_CHANNELS * (size_t) AUDIO_DOUBLE_BUFFER;
+
+    // copie RX -> TX (loopback)
+    memcpy(dst, src, samples * sizeof(int16_t));
+
+    HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
+
+}
+
+void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)
+{
+    if (hsai != sgtl5000.hsai_rx) return;
+
+    // zone source : deuxième moitié du buffer de réception
+    int16_t *src = sgtl5000.sai_rx_buffer;
+    // zone destination : deuxième moitié du buffer de transmission
+    int16_t *dst = sgtl5000.sai_tx_buffer;
+
+    size_t samples = (size_t)AUDIO_BUFFER_LENGTH * (size_t)AUDIO_NUM_CHANNELS * (size_t) AUDIO_DOUBLE_BUFFER;
+
+    // copie RX -> TX (loopback)
+    memcpy(dst, src, samples * sizeof(int16_t));
+    HAL_GPIO_TogglePin(GPIOA, LD2_Pin);
+
+}
+```
+
 # 4. Visualisation
+
+- Basé sur la définition d'un VU-mètre, on va récupérer sur les buffers des `SAI` la valeur d'amplitude max (en binaire car après l'ADC) pour pouvoir réaliser une échelle et allumer les 2 rangées de LEDs de manières identiques :
+
+```c
+// Dans chenille.c
+// Convertit amplitude (int16) → 0..8 LEDs
+void VU_Update(int16_t *buffer, size_t samples)
+{
+    // === 1) Trouver amplitude (peak) ===
+    int32_t peak = 0;
+    for (size_t i = 0; i < samples; i++)
+    {
+        int32_t v = abs(buffer[i]); // car signé -> int32_t
+        if (v > peak) peak = v;
+    }
+
+    // === 2) Normalisation ===
+    // 32767 = max int16 audio
+    float level = (float)peak / 32767.0f;
+
+    if (level > 1.0f) level = 1.0f;
+
+    // === 3) Convertir en 0..8 LEDs ===
+    uint8_t leds = (uint8_t)(level * 8.0f);
+    if (leds > 8) leds = 8;
+
+    // === 4) Affichage sur 2 colonnes A et B ===
+    uint8_t pattern = 0;
+
+    for (uint8_t i = 0; i < leds; i++)
+        pattern |= (1 << i);
+
+    // Tes LEDs s'allument quand le bit = 0
+    pattern ^= 0xFF;
+
+    MCP23S17_WriteRegister(MCP23S17_GPIOA, pattern);
+    MCP23S17_WriteRegister(MCP23S17_GPIOB, pattern);
+}
+```
+
+Et dans les callback des `SAI`, on ajoute la fonction :
+
+```c
+//HalfCallBack
+VU_Update(src, samples);
+//CallBack
+VU_Update(src + samples/2, samples/2);
+```
+Résultat :
+
+![Vumetre](./Docs/TestVUmetre.gif)
 
 # 5. Filtre RC
 

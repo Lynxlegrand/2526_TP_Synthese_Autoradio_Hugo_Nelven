@@ -10,6 +10,7 @@
 
 
 #include "sgtl5000.h"
+#include "chenille.h"
 #include <string.h>
 
 // taille utile : nombre d'échantillons (frames * channels)

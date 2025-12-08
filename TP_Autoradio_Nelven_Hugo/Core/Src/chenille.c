@@ -8,6 +8,7 @@
 #include "chenille.h"
 #include "main.h"
 #include "spi.h"
+#include <math.h>
 // ===================================================================
 // Instance globale initialisée
 // ===================================================================
@@ -119,4 +120,37 @@ void Clear_LED(char port, uint8_t led) {
     MCP23S17_WriteRegister(reg, current);
 }
 
+// Convertit amplitude (int16) → 0..8 LEDs
+void VU_Update(int16_t *buffer, size_t samples)
+{
+    // === 1) Trouver amplitude (peak) ===
+    int32_t peak = 0;
+    for (size_t i = 0; i < samples; i++)
+    {
+        int32_t v = abs(buffer[i]); // car signé -> int32_t
+        if (v > peak) peak = v;
+    }
+
+    // === 2) Normalisation ===
+    // 32767 = max int16 audio
+    float level = (float)peak / 32767.0f;
+
+    if (level > 1.0f) level = 1.0f;
+
+    // === 3) Convertir en 0..8 LEDs ===
+    uint8_t leds = (uint8_t)(level * 8.0f);
+    if (leds > 8) leds = 8;
+
+    // === 4) Affichage sur 2 colonnes A et B ===
+    uint8_t pattern = 0;
+
+    for (uint8_t i = 0; i < leds; i++)
+        pattern |= (1 << i);
+
+    // Tes LEDs s'allument quand le bit = 0
+    pattern ^= 0xFF;
+
+    MCP23S17_WriteRegister(MCP23S17_GPIOA, pattern);
+    MCP23S17_WriteRegister(MCP23S17_GPIOB, pattern);
+}
 
