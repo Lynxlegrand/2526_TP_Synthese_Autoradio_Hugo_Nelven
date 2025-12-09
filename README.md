@@ -596,6 +596,21 @@ Résultat :
 
 # 5. Filtre RC
 
+![FiltreRC](./Docs/FiltreRC.png)
+
+$$V_{in}=Ri+V_{out}\text{ et } i = C\dfrac{dV_{out}}{dt}\\V_{in}=RC\dfrac{dV_{out}}{dt}+V_{out}$$
+
+On peut donc écrire l'équation de récurrence :
+
+$$V_{in}[n]=RC\dfrac{V_{out}[n]-V_{out}[n-1]}{T}+V_{out}[n]\\V_{in}[n]=\left(1+\dfrac{RC}T\right)V_{out}[n]-\dfrac{RC}TV_{out}[n-1]\\ V_{out}=\dfrac{V_{in}[n]+\dfrac{RC}TV_{out}[n-1]}{\left(1+\dfrac{RC}T\right)}\\V_{out}=\dfrac{AV_{in}[n]+B V_{out}[n-1]}{D}$$
+
+Avec $RC=\dfrac1{2\pi f_c}$ on a alors :
+
+$$A=1\hspace{5mm}B=\dfrac{1}{2\pi f_c T}\hspace{5mm}D= \left(1+\dfrac{1}{2\pi f_c T}\right)$$
+
+
+
+
 # 6. Programmation d'un effet audio
 
 
